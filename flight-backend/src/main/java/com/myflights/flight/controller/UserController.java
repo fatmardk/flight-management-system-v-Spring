@@ -19,7 +19,7 @@ public class UserController {
 
 
     //Add User Rest Api
-    @PostMapping("/login")
+    @PostMapping("/register")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         UserDto newUser = userService.createUser(userDto);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
