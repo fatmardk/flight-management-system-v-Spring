@@ -1,11 +1,14 @@
 package com.myflights.flight.controller;
 
 
+import com.myflights.flight.config.JwtService;
+import com.myflights.flight.controller.auth.AuthenticationResponse;
 import com.myflights.flight.dto.UserDto;
 import com.myflights.flight.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,15 +18,18 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
+    private final JwtService jwtService;
     private UserService userService;
 
 
     //Add User Rest Api
-    @PostMapping("/register")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+/*   @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> createUser(@RequestBody UserDto userDto) {
         UserDto newUser = userService.createUser(userDto);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-    }
+        String token = jwtService.generateToken((UserDetails) newUser);
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse(token);
+        return new ResponseEntity<>(authenticationResponse, HttpStatus.CREATED);
+    } */
 
     //Get ALl Employees Api
     @GetMapping ("/all")

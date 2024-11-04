@@ -1,5 +1,8 @@
 package com.myflights.flight.service.impl;
 
+import com.myflights.flight.controller.auth.AuthController;
+import com.myflights.flight.controller.auth.AuthenticationRequest;
+import com.myflights.flight.controller.auth.AuthenticationResponse;
 import com.myflights.flight.dto.UserDto;
 import com.myflights.flight.entity.User;
 import com.myflights.flight.mapper.UserMapper;
@@ -7,6 +10,8 @@ import com.myflights.flight.repository.UserRepository;
 import com.myflights.flight.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +22,14 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final AuthController authController;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, AuthController authController, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
+        this.authController = authController;
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -68,6 +77,7 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
 
     }
+
 
     @Override
     public Optional<UserDto> getUserByEmail(String email) {

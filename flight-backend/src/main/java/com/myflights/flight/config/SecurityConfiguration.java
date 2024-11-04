@@ -23,7 +23,7 @@ public class SecurityConfiguration {
         http
                 .csrf().disable() // Disable CSRF protection for stateless applications
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/user/login/**") // Specify the login endpoint
+                        .requestMatchers("/api/user/register/**") // Specify the login endpoint
                         .permitAll() // Allow all users to access the login endpoint
                         .anyRequest() // All other requests
                         .authenticated() // Require authentication for other requests
