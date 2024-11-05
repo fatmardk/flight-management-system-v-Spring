@@ -46,7 +46,7 @@ const Navbar = () => {
               <a href="#" className="text-black hover:text-gray-800 no-underline">
                 {item}
               </a>
-              <span className="absolute left-0 right-0 h-0.5 bg-black scale-x-0 transition-transform duration-400 ease-in-out group-hover:scale-x-100" style={{ bottom: '-5px' }}></span>
+              <span className="absolute left-0 right-0 h-1 bg-black scale-x-0 transition-transform duration-400 ease-in-out group-hover:scale-x-100" style={{ bottom: '-5px' }}></span>
             </div>
           ))}
         </nav>
@@ -68,7 +68,7 @@ const Navbar = () => {
             {['Holiday Packages', 'Flight Schedule', 'Account Settings', 'Manage Booking', 'Register'].map((item) => (
               <div className="group relative" key={item}>
                 <a href="#" className="text-black hover:text-gray-800 no-underline">{item}</a>
-                <span className="absolute left-0 right-0 h-0.5 bg-black scale-x-0 transition-transform duration-400 ease-in-out group-hover:scale-x-100" style={{ bottom: '-5px' }}></span>
+                <span className="absolute left-0 right-0 h-1 bg-black scale-x-0 transition-transform duration-200 ease-in-out group-hover:scale-x-100" style={{ bottom: '-5px' }}></span>
               </div>
             ))}
             {username ? (
