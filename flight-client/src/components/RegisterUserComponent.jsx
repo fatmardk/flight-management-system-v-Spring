@@ -7,6 +7,7 @@ const LoginUserComponent = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
 
@@ -15,6 +16,7 @@ const LoginUserComponent = () => {
     lastName: "",
     email: "",
     password: "",
+    username: "",
   });
 
   const handleSubmit = (e) => {
@@ -26,6 +28,7 @@ const LoginUserComponent = () => {
         email,
         password,
         role: 2,
+        username,
       };
 
       createUser(employeeData)
@@ -35,6 +38,7 @@ const LoginUserComponent = () => {
           setLastName("");
           setEmail("");
           setPassword("");
+          setUsername("");
           navigate("/dashboard");
         })
         .catch((error) => console.error("Error creating employee:", error));
@@ -67,6 +71,12 @@ const LoginUserComponent = () => {
       valid = false;
     } else {
       errorsCopy.password = "";
+    }
+    if (!username.trim()) {
+      errorsCopy.username = "Username is required";
+      valid = false;
+    } else {
+      errorsCopy.username = "";
     }
     setErrors(errorsCopy);
     return valid;
@@ -118,6 +128,24 @@ const LoginUserComponent = () => {
               <div className="text-red-500 text-sm mt-1">{errors.lastName}</div>
             )}
           </div>
+          <div>
+            <label htmlFor="username" className="text-white">
+              Username
+            </label>
+            <input
+              type="text"
+              className={`w-full px-3 py-2 rounded border ${
+                errors.username ? "border-red-500" : "border-gray-300" // Hatalı olan kısmı düzelttik
+              }`}
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            {errors.username && (
+              <div className="text-red-500 text-sm mt-1">{errors.username}</div>
+            )}
+          </div>
+
           <div>
             <label htmlFor="email" className="text-white">
               Email

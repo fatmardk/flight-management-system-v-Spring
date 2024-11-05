@@ -32,12 +32,12 @@ public class UserServiceImpl implements UserService {
         this.authenticationManager = authenticationManager;
     }
 
-    @Override
+    /*@Override
     public UserDto createUser(UserDto userDto) {
         User user = UserMapper.mapToUser(userDto);
         User savedUser = userRepository.save(user);
         return UserMapper.mapToUserDto(savedUser);
-    }
+    }*/
 
 
 
@@ -78,10 +78,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
     @Override
-    public Optional<UserDto> getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .map(UserMapper::mapToUserDto);
+    public Optional<UserDto> getUserByEmail(String username) {
+        return userRepository.findByUsername(username)
+                .map(user -> UserMapper.mapToUserDto(user));
     }
 }

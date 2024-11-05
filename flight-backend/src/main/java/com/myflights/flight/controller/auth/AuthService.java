@@ -25,6 +25,9 @@ public class AuthService {
         com.myflights.flight.entity.User user = new com.myflights.flight.entity.User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setEmail(request.getEmail());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
 
         // Kullanıcıyı veritabanına kaydet
         repository.save(user);
@@ -46,7 +49,7 @@ public class AuthService {
                 )
         );
 
-        var user = repository.findByEmail(request.getUsername())
+        var user = repository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         var jwtToken = jwtService.generateToken(user);

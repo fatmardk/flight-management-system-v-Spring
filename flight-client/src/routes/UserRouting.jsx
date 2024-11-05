@@ -1,14 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import UserLogin from "../pages/auth/UserLogin";
+import UserRegister from "../pages/auth/UserRegister";
 import Dashboard from "../pages/Dashboard";
 
 const UserRouting = () => {
   return (
     <BrowserRouter>
     <Routes>
-    <Route path="/" element={<UserLogin/>}></Route>
+    <Route path="/"></Route>
 
-      <Route path="/login" element={<UserLogin/>}></Route>
+      <Route path="/register" element={<UserRegister/>}></Route>
 
       <Route path="/dashboard" element={<Dashboard/>}></Route>
     </Routes>

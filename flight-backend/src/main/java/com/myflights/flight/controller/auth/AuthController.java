@@ -2,13 +2,11 @@ package com.myflights.flight.controller.auth;
 
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin("*")
 public class AuthController {
 
     private final AuthService service;
@@ -18,13 +16,6 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse>login(
-            @RequestBody RegisterRequest request
-    ){
-        return ResponseEntity.ok(service.register(request));
-    }
-
-    @PostMapping("/auth")
     public ResponseEntity<AuthenticationResponse>authenticate(
           @RequestBody AuthenticationRequest request
 
