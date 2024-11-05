@@ -1,9 +1,10 @@
-// src/components/Navbar.js
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [username, setUsername] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate(); // useNavigate hook
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -12,6 +13,13 @@ const Navbar = () => {
       setUsername(storedUsername || 'User');
     }
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    setUsername(null);
+    navigate('/login'); // Call navigate function after clearing storage
+  };
 
   return (
     <header className="absolute top-0 left-0 w-full bg-transparent z-10">
@@ -53,11 +61,16 @@ const Navbar = () => {
 
         {/* Register/Sign In for Desktop */}
         <div className="hidden lg:flex items-center space-x-4">
-          <a href="#" className="text-black hover:text-gray-800 no-underline">Register</a>
           {username ? (
-            <span className="text-black">{username}</span>
+            <>
+              <span className="text-black">{username}</span>
+              <button onClick={handleLogout} className="text-white bg-black px-4 py-2 rounded hover:bg-white hover:text-black">Logout</button>
+            </>
           ) : (
-            <a href="#" className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 no-underline">Sign In</a>
+            <>
+              <a href="/register" className="text-black hover:text-gray-800 no-underline">Register</a>
+              <a href="/login" className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 no-underline">Sign In</a>
+            </>
           )}
         </div>
       </div>

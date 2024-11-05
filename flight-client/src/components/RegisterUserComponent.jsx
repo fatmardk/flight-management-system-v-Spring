@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createUser } from "../services/UserService";
 import { useNavigate } from "react-router-dom";
 
-const LoginUserComponent = () => {
+const RegisterUserComponent = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -33,15 +33,20 @@ const LoginUserComponent = () => {
 
       createUser(employeeData)
         .then((response) => {
-          console.log(response);
+          const token = response.data.token;
+          console.log("Token:", token); // Token'ı konsola yazdırıyoruz
+          if (token) {
+            localStorage.setItem("token", token);
+            localStorage.setItem('username', employeeData.username); // Token'ı localStorage'a kaydediyoruz
+          }
           setFirstName("");
           setLastName("");
           setEmail("");
           setPassword("");
           setUsername("");
-          navigate("/dashboard");
+          navigate("/dashboard"); // Token kaydedildikten sonra yönlendirme
         })
-        .catch((error) => console.error("Error creating employee:", error));
+        .catch((error) => console.error("Error creating user:", error));
     }
   };
 
@@ -87,9 +92,9 @@ const LoginUserComponent = () => {
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: "url('./flightlogin.jpg')" }}
     >
-      <div className=" absolute left-20 w-2/5 md:max-w-md p-8  rounded-lg shadow-lg backdrop-blur-md">
+      <div className="absolute left-20 w-2/5 md:max-w-md p-8 rounded-lg shadow-lg backdrop-blur-md">
         <h2 className="text-2xl text-center font-semibold text-white mb-4">
-          Add User
+          Register
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4 text-left">
           <div>
@@ -135,7 +140,7 @@ const LoginUserComponent = () => {
             <input
               type="text"
               className={`w-full px-3 py-2 rounded border ${
-                errors.username ? "border-red-500" : "border-gray-300" // Hatalı olan kısmı düzelttik
+                errors.username ? "border-red-500" : "border-gray-300"
               }`}
               id="username"
               value={username}
@@ -180,6 +185,11 @@ const LoginUserComponent = () => {
               <div className="text-red-500 text-sm mt-1">{errors.password}</div>
             )}
           </div>
+          <div>
+            <p className="text-gray-600 text-center">
+              If you already have an account <a href="/login">Login</a>
+            </p>
+          </div>
           <div className="flex justify-center">
             <button
               type="submit"
@@ -194,4 +204,4 @@ const LoginUserComponent = () => {
   );
 };
 
-export default LoginUserComponent;
+export default RegisterUserComponent;
