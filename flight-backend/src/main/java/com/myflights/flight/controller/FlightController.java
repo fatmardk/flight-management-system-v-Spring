@@ -55,5 +55,10 @@ public class FlightController {
         return flightService.findByDepartureCityAndArrivalCity(source, destination);
     }
 
+    @PostMapping("/search")
+    public ResponseEntity<List<FlightDto>> findFlightsByCriteria(@RequestBody FlightDto flightDto) {
+        List<FlightDto> flights = flightService.findFlightsByCriteria(searchCriteria);
+        return ResponseEntity.ok(flights);
+    }
 
 }

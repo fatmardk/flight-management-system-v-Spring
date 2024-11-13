@@ -9,6 +9,7 @@ const RegisterUserComponent = () => {
     password: "",
     username: "",
   });
+  const [loginError, setLoginError] = useState(""); // Giriş hatası için state
 
   const navigate = useNavigate();
 
@@ -25,15 +26,19 @@ const RegisterUserComponent = () => {
           const token = response.data.token;
           console.log("Token:", token); // Token'ı konsola yazdırıyoruz
           if (token) {
-            localStorage.setItem("token", token); 
-            localStorage.setItem('username', employeeData.username);// Token'ı localStorage'a kaydediyoruz
+            localStorage.setItem("token", token);
+            localStorage.setItem("username", employeeData.username); // Token'ı localStorage'a kaydediyoruz
           }
           setPassword("");
           setUsername("");
           navigate("/dashboard"); // Token kaydedildikten sonra yönlendirme
         })
         .catch((error) => {
-          console.error("Error logging in:", error);
+          if (error.response && error.response.status === 403) {
+            setLoginError("Invalid username or password"); // Kullanıcıya hata mesajı göster
+          } else {
+            console.error("Error logging in:", error);
+          }
         });
     }
   };
@@ -97,6 +102,10 @@ const RegisterUserComponent = () => {
               <div className="text-red-500 text-sm mt-1">{errors.password}</div>
             )}
           </div>
+          {/* Kullanıcı adı veya şifre hatasını gösterme */}
+          {loginError && (
+            <div className="text-red-500 text-center mt-2">{loginError}</div>
+          )}
           <div>
             <p className="text-gray-600 text-center">
               If you don't have an account, <a href="/register">Register</a>

@@ -8,9 +8,36 @@ import {
   faArrowRightArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import axios from "axios";
 
 function Dashboard() {
   const [tripType, setTripType] = useState("roundTrip");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [departureDate, setDepartureDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  const [passengers, setPassengers] = useState(1);
+  const [travelClass, setTravelClass] = useState("Economy");
+
+  // Handle search function
+  const handleSearchFlights = async () => {
+    try {
+      const searchCriteria = {
+        source: from,
+        destination: to,
+        departureDate,
+        returnDate: tripType === "roundTrip" ? returnDate : null,
+        passengers,
+        travelClass,
+      };
+
+      const response = await axios.post("/api/flights/search", searchCriteria);
+      // Handle response, e.g., set flight results to display them
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error searching for flights:", error);
+    }
+  };
 
   return (
     <div
@@ -19,6 +46,7 @@ function Dashboard() {
     >
       <Navbar />
       <main className="container mx-auto px-6 py-64">
+        {/* Greeting Section */}
         <div className="text-left mb-36 -mt-24">
           <h2 className="text-4xl font-semibold text-gray-800">
             Hey Buddy! Where are you{" "}
@@ -30,6 +58,7 @@ function Dashboard() {
           </button>
         </div>
 
+        {/* Search Form */}
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <div className="flex space-x-14 mb-4">
             <button className="text-black font-black flex items-center space-x-2">
@@ -56,7 +85,6 @@ function Dashboard() {
                 checked={tripType === "roundTrip"}
                 onChange={() => setTripType("roundTrip")}
                 className="mr-2"
-                aria-label="Round Trip"
               />
               Round Trip
             </label>
@@ -68,7 +96,6 @@ function Dashboard() {
                 checked={tripType === "oneWay"}
                 onChange={() => setTripType("oneWay")}
                 className="mr-2"
-                aria-label="One Way"
               />
               One Way
             </label>
@@ -82,15 +109,15 @@ function Dashboard() {
                 <input
                   type="text"
                   placeholder="City or Airport"
+                  value={from}
+                  onChange={(e) => setFrom(e.target.value)}
                   className="border p-3 rounded"
-                  aria-label="From"
                 />
               </div>
               {tripType === "roundTrip" && (
                 <FontAwesomeIcon
                   className="ml-4 mt-4"
                   icon={faArrowRightArrowLeft}
-                  aria-label="Round Trip Indicator"
                 />
               )}
               <div className="flex flex-col ml-4">
@@ -98,8 +125,9 @@ function Dashboard() {
                 <input
                   type="text"
                   placeholder="City or Airport"
+                  value={to}
+                  onChange={(e) => setTo(e.target.value)}
                   className="border p-3 rounded"
-                  aria-label="To"
                 />
               </div>
             </div>
@@ -107,8 +135,9 @@ function Dashboard() {
               <label className="text-gray-600">Departure</label>
               <input
                 type="date"
+                value={departureDate}
+                onChange={(e) => setDepartureDate(e.target.value)}
                 className="border p-2 rounded"
-                aria-label="Departure Date"
               />
             </div>
 
@@ -118,8 +147,9 @@ function Dashboard() {
                 <label className="text-gray-600">Return</label>
                 <input
                   type="date"
+                  value={returnDate}
+                  onChange={(e) => setReturnDate(e.target.value)}
                   className="border p-2 rounded"
-                  aria-label="Return Date"
                 />
               </div>
             )}
@@ -130,14 +160,18 @@ function Dashboard() {
                 type="number"
                 min="1"
                 max="10"
-                placeholder="Number of Passengers"
+                value={passengers}
+                onChange={(e) => setPassengers(e.target.value)}
                 className="border p-2 rounded"
-                aria-label="Number of Passengers"
               />
             </div>
             <div className="flex flex-col">
               <label className="text-gray-600">Class</label>
-              <select className="border p-2 rounded" aria-label="Travel Class">
+              <select
+                value={travelClass}
+                onChange={(e) => setTravelClass(e.target.value)}
+                className="border p-2 rounded"
+              >
                 <option>Economy</option>
                 <option>Business</option>
                 <option>First Class</option>
@@ -146,11 +180,15 @@ function Dashboard() {
           </form>
 
           {/* Search Flights Button */}
-          <button className="bg-black text-white px-8 py-3 rounded-lg flex absolute right-40 items-center space-x-2 hover:bg-gray-800">
+          <button
+            onClick={handleSearchFlights}
+            className="bg-black text-white px-8 py-3 rounded-lg flex mt-4 items-center space-x-2 hover:bg-gray-800"
+          >
             <span>Search Flights</span>
           </button>
         </div>
 
+        {/* Popular Destinations */}
         <div className="mt-24">
           <div className="flex justify-between mb-2">
             <p className="font-bold">Popular Destinations</p>
